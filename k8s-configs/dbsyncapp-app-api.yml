@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbsyncapp-main-api
+  labels:
+    app: dbsyncapp-main-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbsyncapp-main-api
+  template:
+    metadata:
+      labels:
+        app: dbsyncapp-main-api
+    spec:
+      containers:
+        - name: dbsyncapp-main-api
+          image: registry.digitalocean.com/dbsyncapp/dbsyncapp:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 200Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbsyncapp-main-api-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+  selector:
+    app: dbsyncapp-main-api
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: dbsyncapp-main-api-ingress
+  labels:
+    app: dbsyncapp-main-api-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: dbsyncapp-main-api-service
+              servicePort: 80
