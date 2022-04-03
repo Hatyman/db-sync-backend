@@ -13,6 +13,7 @@ using Hangfire.PostgreSql;
 using I18Next.Net.Backends;
 using I18Next.Net.Extensions;
 using I18Next.Net.Plugins;
+using MccSoft.DbSyncApp.App.Features.DbScheme;
 using MccSoft.DbSyncApp.App.Features.Products;
 using MccSoft.NpgSql;
 using MccSoft.DbSyncApp.App.Middleware;
@@ -287,7 +288,8 @@ namespace MccSoft.DbSyncApp.App
                 .AddScoped<IDateTimeProvider, DateTimeProvider>()
                 .AddTransient<IUserAccessor, UserAccessor>()
                 .AddScoped<DefaultUserSeeder>()
-                .AddScoped<ProductService>();
+                .AddScoped<ProductService>()
+                .AddScoped<DbSchemeService>();
 
             services
                 .AddSingleton<Func<DbSyncAppDbContext>>(
