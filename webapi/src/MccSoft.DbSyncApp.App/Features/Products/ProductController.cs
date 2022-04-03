@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MccSoft.DbSyncApp.App.Features.Products
 {
-    [Authorize]
+    [AllowAnonymous]
+    [ApiController]
     [Route("api/products")]
     public class ProductController
     {

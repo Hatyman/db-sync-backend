@@ -20,6 +20,7 @@ namespace MccSoft.DbSyncApp.Persistence
     {
         public IUserAccessor UserAccessor { get; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Sale> Sales { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
 
         public DbSyncAppDbContext(

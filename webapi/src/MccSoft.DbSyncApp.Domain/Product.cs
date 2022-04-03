@@ -11,6 +11,13 @@ namespace MccSoft.DbSyncApp.Domain
         public int Id { get; set; }
         public ProductType ProductType { get; set; }
 
+        public double PriceDouble { get; set; }
+        public float PriceFloat { get; set; }
+
+        public string SaleId { get; set; }
+        public Sale Sale { get; set; }
+        public string BoxId { get; set; }
+        public Box Box { get; set; }
         public DateOnly LastStockUpdatedAt { get; set; }
 
         public string Title
