@@ -248,7 +248,7 @@ namespace MccSoft.DbSyncApp.App
 
                     if (hostEnvironment.IsDevelopment())
                     {
-                        // spa.UseProxyToSpaDevelopmentServer("http://localhost:8081/");
+                        spa.UseProxyToSpaDevelopmentServer("http://localhost:3853/");
                     }
                 }
             );
