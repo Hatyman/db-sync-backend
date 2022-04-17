@@ -4,6 +4,7 @@ using MccSoft.DbSyncApp.Domain;
 using MccSoft.DbSyncApp.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MccSoft.DbSyncApp.Persistence.Migrations
 {
     [DbContext(typeof(DbSyncAppDbContext))]
-    partial class DbSyncAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220328171741_Fix_NUllable")]
+    partial class Fix_NUllable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,21 +25,6 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "product_type", new[] { "undefined", "auto", "electronic", "other" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("BoxSale", b =>
-                {
-                    b.Property<string>("BoxesId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SalesId")
-                        .HasColumnType("text");
-
-                    b.HasKey("BoxesId", "SalesId");
-
-                    b.HasIndex("SalesId");
-
-                    b.ToTable("BoxSale");
-                });
 
             modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Audit.AuditLog", b =>
                 {
@@ -81,19 +68,6 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Box", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsFull")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Boxes");
-                });
-
             modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -101,9 +75,6 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BoxId")
-                        .HasColumnType("text");
 
                     b.Property<DateOnly>("LastStockUpdatedAt")
                         .HasColumnType("date");
@@ -125,9 +96,6 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BoxId")
-                        .IsUnique();
-
                     b.HasIndex("SaleId");
 
                     b.ToTable("Products");
@@ -144,35 +112,6 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sales");
-                });
-
-            modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Transaction", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ChangeType")
-                        .HasColumnType("integer");
-
-                    b.Property<object>("Changes")
-                        .HasColumnType("json");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("InstanceId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("SyncDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("MccSoft.DbSyncApp.Domain.User", b =>
@@ -575,21 +514,6 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
                     b.ToTable("OpenIddictTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BoxSale", b =>
-                {
-                    b.HasOne("MccSoft.DbSyncApp.Domain.Box", null)
-                        .WithMany()
-                        .HasForeignKey("BoxesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MccSoft.DbSyncApp.Domain.Sale", null)
-                        .WithMany()
-                        .HasForeignKey("SalesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Audit.AuditLog", b =>
                 {
                     b.HasOne("MccSoft.DbSyncApp.Domain.User", "User")
@@ -601,15 +525,9 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
 
             modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Product", b =>
                 {
-                    b.HasOne("MccSoft.DbSyncApp.Domain.Box", "Box")
-                        .WithOne("Product")
-                        .HasForeignKey("MccSoft.DbSyncApp.Domain.Product", "BoxId");
-
                     b.HasOne("MccSoft.DbSyncApp.Domain.Sale", "Sale")
                         .WithMany("Products")
                         .HasForeignKey("SaleId");
-
-                    b.Navigation("Box");
 
                     b.Navigation("Sale");
                 });
@@ -687,11 +605,6 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
                     b.Navigation("Application");
 
                     b.Navigation("Authorization");
-                });
-
-            modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Box", b =>
-                {
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Sale", b =>

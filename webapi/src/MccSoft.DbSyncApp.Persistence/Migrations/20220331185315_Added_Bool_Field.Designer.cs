@@ -4,6 +4,7 @@ using MccSoft.DbSyncApp.Domain;
 using MccSoft.DbSyncApp.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MccSoft.DbSyncApp.Persistence.Migrations
 {
     [DbContext(typeof(DbSyncAppDbContext))]
-    partial class DbSyncAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220331185315_Added_Bool_Field")]
+    partial class Added_Bool_Field
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +93,7 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Boxes");
+                    b.ToTable("Box");
                 });
 
             modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Product", b =>
@@ -144,35 +146,6 @@ namespace MccSoft.DbSyncApp.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sales");
-                });
-
-            modelBuilder.Entity("MccSoft.DbSyncApp.Domain.Transaction", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ChangeType")
-                        .HasColumnType("integer");
-
-                    b.Property<object>("Changes")
-                        .HasColumnType("json");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("InstanceId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("SyncDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("MccSoft.DbSyncApp.Domain.User", b =>

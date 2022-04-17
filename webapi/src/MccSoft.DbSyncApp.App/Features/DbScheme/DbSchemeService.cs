@@ -117,9 +117,7 @@ public class DbSchemeService
             switch (typeName)
             {
                 case "String":
-                    attributeScheme.Type = property.IsPrimaryKey()
-                        ? RealmDataType.ObjectId
-                        : RealmDataType.String;
+                    attributeScheme.Type = RealmDataType.String;
                     break;
                 case "Boolean":
                     attributeScheme.Type = RealmDataType.Bool;
@@ -140,7 +138,7 @@ public class DbSchemeService
                     attributeScheme.Type = RealmDataType.Int;
                     break;
                 case "Object":
-                    attributeScheme.Type = RealmDataType.Data;
+                    attributeScheme.Type = RealmDataType.Dictionary;
                     attributeScheme.Format = DataFormat.Json;
                     break;
                 case "Single":

@@ -6,7 +6,7 @@ public enum RealmDataType
     Bool,
     Double,
     String,
-    Data,
+    Dictionary,
     ObjectId,
     Date,
 }
