@@ -16,4 +16,11 @@ public class DbSchemeController
     {
         return dbSchemeService.GetScheme();
     }
+
+    [AllowAnonymous]
+    [HttpGet("transactions")]
+    public TransactionDto GetTransactions()
+    {
+        return new TransactionDto();
+    }
 }

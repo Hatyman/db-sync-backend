@@ -14,6 +14,7 @@ using I18Next.Net.Backends;
 using I18Next.Net.Extensions;
 using I18Next.Net.Plugins;
 using MccSoft.DbSyncApp.App.Features.DbScheme;
+using MccSoft.DbSyncApp.App.Features.Hub;
 using MccSoft.DbSyncApp.App.Features.Products;
 using MccSoft.NpgSql;
 using MccSoft.DbSyncApp.App.Middleware;
@@ -99,6 +100,9 @@ namespace MccSoft.DbSyncApp.App
                     options.SizeLimit = null;
                 }
             );
+
+            services.AddSignalR();
+
             ConfigureContainer(services);
             ConfigureDatabase(services);
             ConfigureAuth(services);
@@ -219,8 +223,10 @@ namespace MccSoft.DbSyncApp.App
                 {
                     endpoints.MapControllers();
                     endpoints.MapHealthChecks(_healthCheckUrl);
+                    endpoints.MapHub<TransactionHub>("/transactions-sync");
                 }
             );
+
             app.UseSpa(
                 spa =>
                 {
@@ -242,7 +248,7 @@ namespace MccSoft.DbSyncApp.App
 
                     if (hostEnvironment.IsDevelopment())
                     {
-                        spa.UseProxyToSpaDevelopmentServer("http://localhost:3853/");
+                        // spa.UseProxyToSpaDevelopmentServer("http://localhost:8081/");
                     }
                 }
             );
@@ -296,9 +302,7 @@ namespace MccSoft.DbSyncApp.App
                     provider =>
                         () =>
                             new DbSyncAppDbContext(
-                                provider.GetRequiredService<
-                                    DbContextOptions<DbSyncAppDbContext>
-                                >(),
+                                provider.GetRequiredService<DbContextOptions<DbSyncAppDbContext>>(),
                                 provider.GetRequiredService<IUserAccessor>()
                             )
                 )
@@ -462,10 +466,7 @@ namespace MccSoft.DbSyncApp.App
                                     {
                                         { "profile", "profile" },
                                         { "offline_access", "offline_access" },
-                                        {
-                                            "MccSoft.DbSyncApp.AppAPI",
-                                            "MccSoft.DbSyncApp.AppAPI"
-                                        },
+                                        { "MccSoft.DbSyncApp.AppAPI", "MccSoft.DbSyncApp.AppAPI" },
                                     }
                                 }
                             }
