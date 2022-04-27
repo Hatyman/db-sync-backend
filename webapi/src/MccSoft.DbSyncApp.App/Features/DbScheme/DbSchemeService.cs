@@ -34,7 +34,14 @@ public class DbSchemeService
             }
             var tableIdentifier = StoreObjectIdentifier.Table(tableName, entityType.GetSchema());
 
-            TableSchemeDto tableScheme = new() { Name = tableName };
+            Type entityClassType = entityType.ClrType;
+            TableSchemeDto tableScheme =
+                new()
+                {
+                    Name = tableName,
+                    EntityFullName = entityClassType.FullName!,
+                    AssemblyName = entityClassType.Assembly.FullName!,
+                };
             dbScheme.Tables.Add(tableName, tableScheme);
 
             foreach (IProperty property in entityType.GetProperties())
@@ -111,6 +118,12 @@ public class DbSchemeService
 
         Type type = property.ClrType;
         var typeName = type.Name;
+
+        if (typeName.Contains("Nullable"))
+        {
+            type = Nullable.GetUnderlyingType(type) ?? property.ClrType;
+            typeName = type.Name;
+        }
 
         if (type.Namespace == "System")
         {
