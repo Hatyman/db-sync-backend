@@ -9,7 +9,8 @@ namespace MccSoft.DbSyncApp.App.Utils.Localization
 
         public LocalizableIdentityErrorDescriber(
             IStringLocalizer<LocalizableIdentityErrorDescriber> localizer
-        ) {
+        )
+        {
             _localizer = localizer;
         }
 

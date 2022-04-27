@@ -5,9 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MccSoft.DbSyncApp.Domain;
 
-public class Transaction
+public class Transaction : ISyncableEntity
 {
     public Transaction(
+        string id,
         string tableName,
         Dictionary<string, dynamic> changes,
         ChangeType changeType,
@@ -16,6 +17,7 @@ public class Transaction
         DateTime syncDate
     )
     {
+        Id = id;
         TableName = tableName;
         Changes = changes;
         ChangeType = changeType;
@@ -23,7 +25,7 @@ public class Transaction
         CreationDate = creationDate;
         SyncDate = syncDate;
     }
-    protected Transaction() { }
+    public Transaction() { }
 
     public string Id { get; set; }
     [Required]

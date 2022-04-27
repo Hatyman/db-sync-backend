@@ -6,7 +6,7 @@ namespace MccSoft.DbSyncApp.App.Features.Products.Dto
 {
     public class ProductDto
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public ProductType ProductType { get; set; }
 

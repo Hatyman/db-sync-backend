@@ -45,9 +45,9 @@ namespace MccSoft.DbSyncApp.App.Features.Products
             return await Get(productId);
         }
 
-        public async Task<ProductDto> Patch(int id, PatchProductDto dto)
+        public async Task<ProductDto> Patch(string id, PatchProductDto dto)
         {
-            Product product = await _dbContext.Products.GetOne(Product.HasId(id));
+            Product product = await _dbContext.Products.GetOne(ISyncableEntity.HasId<Product>(id));
             product.Update(dto);
 
             await _dbContext.SaveChangesAsync();
@@ -74,14 +74,17 @@ namespace MccSoft.DbSyncApp.App.Features.Products
                 .ToPagingListAsync(search, nameof(ProductListItemDto.Id));
         }
 
-        public async Task<ProductDto> Get(int id)
+        public async Task<ProductDto> Get(string id)
         {
-            return await _dbContext.Products.GetOne(Product.HasId(id), x => x.ToProductDto());
+            return await _dbContext.Products.GetOne(
+                ISyncableEntity.HasId<Product>(id),
+                x => x.ToProductDto()
+            );
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(string id)
         {
-            var product = await _dbContext.Products.GetOne(Product.HasId(id));
+            var product = await _dbContext.Products.GetOne(ISyncableEntity.HasId<Product>(id));
 
             _dbContext.Products.Remove(product);
 

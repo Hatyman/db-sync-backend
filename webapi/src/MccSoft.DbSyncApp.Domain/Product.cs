@@ -5,10 +5,10 @@ using Microsoft.Extensions.Logging;
 
 namespace MccSoft.DbSyncApp.Domain
 {
-    public class Product : BaseEntity
+    public class Product : BaseEntity, ISyncableEntity
     {
         private string _title;
-        public int Id { get; set; }
+        public string Id { get; set; }
         public ProductType ProductType { get; set; }
 
         public double PriceDouble { get; set; }
@@ -36,7 +36,7 @@ namespace MccSoft.DbSyncApp.Domain
         /// <summary>
         /// Needed for Entity Framework, keep empty.
         /// </summary>
-        protected Product() { }
+        public Product() { }
 
         /// <summary>
         /// Constructor to initialize User entity.
@@ -45,13 +45,5 @@ namespace MccSoft.DbSyncApp.Domain
         {
             Title = title;
         }
-
-        /// <summary>
-        /// Creates a specification that is satisfied by a Product having the specified id.
-        /// </summary>
-        /// <param name="id">The user id.</param>
-        /// <returns>The created specification.</returns>
-        public static Specification<Product> HasId(int id) =>
-            new(nameof(HasId), p => p.Id == id, id);
     }
 }

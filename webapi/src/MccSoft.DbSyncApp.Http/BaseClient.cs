@@ -18,7 +18,6 @@ namespace MccSoft.DbSyncApp.Http
                 ChangeNullValueHandling(NullValueHandling.Include);
                 return await func();
             }
-
             finally
             {
                 ChangeNullValueHandling(NullValueHandling.Ignore);

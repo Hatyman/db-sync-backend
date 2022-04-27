@@ -2,9 +2,9 @@
 
 namespace MccSoft.DbSyncApp.Domain;
 
-public class Box
+public class Box : ISyncableEntity
 {
-    protected Box() { }
+    public Box() { }
     public string Id { get; set; }
     public bool IsFull { get; set; }
     public Product Product { get; set; }

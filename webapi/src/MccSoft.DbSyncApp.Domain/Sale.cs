@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MccSoft.DbSyncApp.Domain;
 
-public class Sale
+public class Sale : ISyncableEntity
 {
     public string Id { get; set; }
 
@@ -15,5 +15,5 @@ public class Sale
     /// <summary>
     /// Needed for Entity Framework, keep empty.
     /// </summary>
-    protected Sale() { }
+    public Sale() { }
 }

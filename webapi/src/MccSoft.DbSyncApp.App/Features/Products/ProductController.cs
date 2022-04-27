@@ -26,10 +26,10 @@ namespace MccSoft.DbSyncApp.App.Features.Products
             return await _productService.Create(dto);
         }
 
-        [HttpPatch("{id:int}")]
+        [HttpPatch("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400, Type = typeof(ValidationProblemDetails))]
-        public async Task<ProductDto> Patch(int id, [FromBody] PatchProductDto dto)
+        public async Task<ProductDto> Patch(string id, [FromBody] PatchProductDto dto)
         {
             return await _productService.Patch(id, dto);
         }
@@ -37,7 +37,7 @@ namespace MccSoft.DbSyncApp.App.Features.Products
         [HttpDelete("")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400, Type = typeof(ValidationProblemDetails))]
-        public async Task Delete(int id)
+        public async Task Delete(string id)
         {
             await _productService.Delete(id);
         }
@@ -48,8 +48,8 @@ namespace MccSoft.DbSyncApp.App.Features.Products
             return await _productService.Search(dto);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ProductDto> Get(int id)
+        [HttpGet("{id}")]
+        public async Task<ProductDto> Get(string id)
         {
             return await _productService.Get(id);
         }

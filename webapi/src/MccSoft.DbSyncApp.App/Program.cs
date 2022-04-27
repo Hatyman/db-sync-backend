@@ -19,7 +19,8 @@ namespace MccSoft.DbSyncApp.App
         {
             var config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 
-            return WebHost.CreateDefaultBuilder<T>(args)
+            return WebHost
+                .CreateDefaultBuilder<T>(args)
                 .UseConfiguration(config)
                 .ConfigureAppConfiguration(
                     (builderContext, config) =>

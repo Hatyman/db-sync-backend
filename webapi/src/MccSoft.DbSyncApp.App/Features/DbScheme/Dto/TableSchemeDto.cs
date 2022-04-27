@@ -7,6 +7,8 @@ namespace MccSoft.DbSyncApp.App.Features.DbScheme.Dto;
 public class TableSchemeDto
 {
     public string Name { get; set; } = "";
+    public string EntityFullName { get; set; } = "";
+    public string AssemblyName { get; set; } = "";
     [Required]
     public Dictionary<string, AttributeDto> Attributes { get; set; } = new();
     [Required]
