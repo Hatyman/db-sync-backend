@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper.Internal;
 using MccSoft.DbSyncApp.App.Features.DbScheme.Dto;
 using MccSoft.DbSyncApp.Domain;
 using MccSoft.DbSyncApp.Persistence;
@@ -53,7 +54,7 @@ public class TransactionHub : Microsoft.AspNetCore.SignalR.Hub
                         transaction.Changes,
                         transaction.ChangeType,
                         transaction.InstanceId,
-                        transaction.CreationDate.ToUniversalTime(),
+                        DateTime.SpecifyKind(transaction.CreationDate, DateTimeKind.Utc),
                         DateTime.Now.ToUniversalTime()
                     )
                 );
@@ -102,8 +103,8 @@ public class TransactionHub : Microsoft.AspNetCore.SignalR.Hub
                                             jToken.Value<string>();
                                             //jToken.
                                         }*/
-                                        var castedValue = Convert.ChangeType(
-                                            value.ToString(),
+                                        var castedValue = this.castValueToPropertyType(
+                                            value,
                                             property.PropertyType
                                         );
                                         property.SetValue(item, castedValue);
@@ -120,8 +121,9 @@ public class TransactionHub : Microsoft.AspNetCore.SignalR.Hub
                                 foreach (KeyValuePair<string, dynamic> pair in transactionChanges)
                                 {
                                     PropertyInfo property = classType.GetProperty(pair.Key);
-                                    var castedValue = Convert.ChangeType(
-                                        pair.Value.ToString(),
+
+                                    var castedValue = this.castValueToPropertyType(
+                                        pair.Value,
                                         property.PropertyType
                                     );
                                     property.SetValue(itemToBeModified, castedValue);
@@ -162,5 +164,29 @@ public class TransactionHub : Microsoft.AspNetCore.SignalR.Hub
                     return syncedTransactionsId;
                 }
             );
+    }
+
+    private dynamic? castValueToPropertyType(dynamic? value, Type propertyType)
+    {
+        if (value?.ToString() == null)
+        {
+            return null;
+        }
+
+        var castedValue = Convert.ChangeType(
+            value?.ToString(),
+            propertyType.IsNullableType() ? Nullable.GetUnderlyingType(propertyType)! : propertyType
+        );
+
+        if (
+            (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
+            && castedValue != null
+        )
+        {
+            DateTime dateTime = castedValue;
+            castedValue = dateTime.ToUniversalTime();
+        }
+
+        return castedValue;
     }
 }

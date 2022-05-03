@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MccSoft.DbSyncApp.App.Features.DbScheme;
+﻿using MccSoft.DbSyncApp.App.Features.DbScheme;
 using MccSoft.DbSyncApp.App.Features.DbScheme.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +17,8 @@ public class DbSchemeController
     }
 
     [AllowAnonymous]
-    [HttpGet("transactions")]
-    public TransactionDto GetTransactions()
+    [HttpPost("transactions")]
+    public TransactionDto GetTransactions(TransactionDto _dto)
     {
         return new TransactionDto();
     }

@@ -9,6 +9,7 @@ public class Sale : ISyncableEntity
 
     public List<Product> Products { get; set; }
     public DateTime DateTime { get; set; }
+    public DateTime? OptionalDateTime { get; set; }
 
     public List<Box> Boxes { get; set; }
 
