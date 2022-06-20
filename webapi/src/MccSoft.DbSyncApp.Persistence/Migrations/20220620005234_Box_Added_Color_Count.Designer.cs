@@ -4,6 +4,7 @@ using MccSoft.DbSyncApp.Domain;
 using MccSoft.DbSyncApp.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MccSoft.DbSyncApp.Persistence.Migrations
 {
     [DbContext(typeof(DbSyncAppDbContext))]
-    partial class DbSyncAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220620005234_Box_Added_Color_Count")]
+    partial class Box_Added_Color_Count
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

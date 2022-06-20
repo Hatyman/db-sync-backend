@@ -86,6 +86,7 @@ public class TransactionHub : Microsoft.AspNetCore.SignalR.Hub
     }
 
     private static int _counter = 1;
+
     public async Task SendFakeTransactions()
     {
         var dateTime = DateTime.Now.ToUniversalTime();
@@ -192,7 +193,7 @@ public class TransactionHub : Microsoft.AspNetCore.SignalR.Hub
             }
         }
 
-        return await _dbContext.Database
+        var synchronizedIds = await _dbContext.Database
             .CreateExecutionStrategy()
             .ExecuteAsync(
                 async () =>
@@ -291,6 +292,10 @@ public class TransactionHub : Microsoft.AspNetCore.SignalR.Hub
                     return syncedTransactionsId;
                 }
             );
+
+        Clients.Others.SendAsync("client-received", unSyncedTransactionDtos);
+
+        return synchronizedIds;
     }
 
     private dynamic? castValueToPropertyType(dynamic? value, Type propertyType)
